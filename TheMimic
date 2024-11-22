@@ -1,0 +1,298 @@
+local PabloLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/BatuKvi123/PabloLibV3/main/PabloLibV3"))()
+
+local window = PabloLib:Create(
+    "Ultra Hub | EnchantedV4000", -- Name of the hub.
+    "Enabled", -- Draggable window.
+    "Q" -- Keybind to open/close the window.
+)
+
+local tab1 = window:CreateTab("Trials Part 1")
+
+tab1:CreateButton("Instant Win", function()
+local function getPumpkinCount()
+            local player = game.Players.LocalPlayer
+            local backpack = player:WaitForChild("Backpack")
+            local pumpkinCount = 0
+            for _, item in pairs(backpack:GetChildren()) do
+                if item.Name:lower() == "pumpkin" then
+                    pumpkinCount = pumpkinCount + 1
+                end
+            end
+            return pumpkinCount
+        end
+        local function teleportAndCheck(previousCFrame, nextCFrame, proximityPrompt)
+            local initialPumpkinCount = getPumpkinCount()
+            HumanoidRootPart.CFrame = previousCFrame
+            task.wait(0.18)
+            fireproximityprompt(proximityPrompt)
+            task.wait(0.42)
+            local currentPumpkinCount = getPumpkinCount()    
+            if currentPumpkinCount > initialPumpkinCount then
+                HumanoidRootPart.CFrame = nextCFrame
+            elseif currentPumpkinCount == initialPumpkinCount then
+                teleportAndCheck(previousCFrame, nextCFrame, proximityPrompt)
+            end
+        end
+        local function fireBurnerPrompt()
+            for i = 1, 3 do
+                task.wait(0.18)
+                fireproximityprompt(workspace.Map.Well.Burner.ProximityPrompt)
+            end
+        end
+        executeIfAlive(function()
+            teleportAndCheck(
+                game.Workspace.GameInfo.PuzzleItems.GrabItem:FindFirstChildOfClass("MeshPart").CFrame,
+                game.Workspace.GameInfo.PuzzleItems:GetChildren()[2]:FindFirstChildOfClass("MeshPart").CFrame,
+                workspace.GameInfo.PuzzleItems.GrabItem.ProximityPrompt
+            )
+            task.wait(0.42)
+            teleportAndCheck(
+                game.Workspace.GameInfo.PuzzleItems:GetChildren()[2]:FindFirstChildOfClass("MeshPart").CFrame,
+                game.Workspace.GameInfo.PuzzleItems:GetChildren()[3]:FindFirstChildOfClass("MeshPart").CFrame,
+                workspace.GameInfo.PuzzleItems:GetChildren()[2].ProximityPrompt
+            )
+            task.wait(0.42)
+            teleportAndCheck(
+                game.Workspace.GameInfo.PuzzleItems:GetChildren()[3]:FindFirstChildOfClass("MeshPart").CFrame,
+                game.Workspace.Map.Well.Burner.CFrame,
+                workspace.GameInfo.PuzzleItems:GetChildren()[3].ProximityPrompt
+            )
+            task.wait(0.42)
+            if getPumpkinCount() == 3 then
+                HumanoidRootPart.CFrame = game.Workspace.Map.Well.Burner.CFrame
+                fireBurnerPrompt()
+            end
+        end)
+    end
+    print("Hello World")
+end)
+
+tab1:CreateButton("Collect All Candy", function()
+executeIfAlive(function()
+            local function interactWithItem(item, HumanoidRootPart)
+                if item:IsA("MeshPart") and item:FindFirstChild("ProximityPrompt") then
+                    HumanoidRootPart.CFrame = item.CFrame
+                    task.wait(0.18)
+                    fireproximityprompt(item.ProximityPrompt)
+                    task.wait(0.38)
+                end
+            end
+            local candyModel = workspace.Candy
+            if candyModel and candyModel:FindFirstChild("Candy") then
+                HumanoidRootPart.CFrame = candyModel.Candy.CFrame
+                task.wait(0.18)
+                fireproximityprompt(candyModel.Candy.ProximityPrompt)
+                task.wait(0.38)
+            elseif not candyModel:FindFirstChild("Candy") then
+            end
+            if candyModel and candyModel:GetChildren() then
+                local candyChildren = candyModel:GetChildren()
+                for i, child in ipairs(candyChildren) do
+                    if child:IsA("MeshPart") then
+                        child.CanCollide = false
+                        interactWithItem(child, HumanoidRootPart)
+                    end
+                end
+            end
+            HumanoidRootPart.CFrame = CFrame.new(-358.411743, -19.9798203, -317.774628, 0.999872208, 0, 0.0159859657, 0, 1, 0, -0.0159859657, 0, 0.999872208)
+        end)
+    end
+print("Hello World")
+end)
+
+local tab1 = window:CreateTab("Player")
+
+tab1:CreateButton("FullBright", function()
+local Lighting = game:GetService("Lighting")
+        if not Lighting then return end
+        if value then
+            if not _G.NormalLightingSettings then
+                _G.NormalLightingSettings = {
+                    Brightness = Lighting.Brightness,
+                    ClockTime = Lighting.ClockTime,
+                    FogEnd = Lighting.FogEnd,
+                    GlobalShadows = Lighting.GlobalShadows,
+                    Ambient = Lighting.Ambient
+                }
+            end
+            Lighting.Brightness = 2
+            Lighting.ClockTime = 12
+            Lighting.FogEnd = 1000000
+            Lighting.GlobalShadows = false
+            Lighting.Ambient = Color3.fromRGB(255, 255, 255)
+        else
+            if _G.NormalLightingSettings then
+                Lighting.Brightness = _G.NormalLightingSettings.Brightness
+                Lighting.ClockTime = _G.NormalLightingSettings.ClockTime
+                Lighting.FogEnd = _G.NormalLightingSettings.FogEnd
+                Lighting.GlobalShadows = _G.NormalLightingSettings.GlobalShadows
+                Lighting.Ambient = _G.NormalLightingSettings.Ambient
+            end
+        end
+    end
+print("Hello World")
+end)
+
+local tab1 = window:CreateTab("Trial Part 2")
+
+tab1:CreateButton("Light All Candle", function()
+executeIfAlive(function()
+            HumanoidRootPart.CFrame = game.Workspace.Candles.Candle.Candles.CFrame
+            task.wait(0.18)
+            fireproximityprompt(game.Workspace.Candles.Candle.Candles.ProximityPrompt)
+            task.wait(0.42)
+            HumanoidRootPart.CFrame = game.Workspace.Candles:GetChildren()[2].Candles.CFrame
+            task.wait(0.18)
+            fireproximityprompt(game.Workspace.Candles:GetChildren()[2].Candles.ProximityPrompt)
+            task.wait(0.42)
+            HumanoidRootPart.CFrame = game.Workspace.Candles:GetChildren()[3].Candles.CFrame
+            task.wait(0.18)
+            fireproximityprompt(game.Workspace.Candles:GetChildren()[3].Candles.ProximityPrompt)
+            task.wait(0.42)
+            HumanoidRootPart.CFrame = game.Workspace.Candles:GetChildren()[4].Candles.CFrame
+            task.wait(0.18)
+            fireproximityprompt(game.Workspace.Candles:GetChildren()[4].Candles.ProximityPrompt)
+        end)
+    end
+print("Hello World")
+end)
+
+tab1:CreateButton("Instant Win", function()
+local TeleportService = game:GetService("TeleportService")
+        TeleportService:Teleport(7633631511, LocalPlayer)
+    end
+print("Hello World")
+end)
+
+tab1:CreateButton("Collect All Candy", function()
+executeIfAlive(function()
+            local function interactWithItem(item, HumanoidRootPart)
+                if item:IsA("MeshPart") and item:FindFirstChild("ProximityPrompt") then
+                    HumanoidRootPart.CFrame = item.CFrame
+                    task.wait(0.18)
+                    fireproximityprompt(item.ProximityPrompt)
+                    task.wait(0.38)
+                end
+            end
+            local candyModel = workspace.Candy
+            if candyModel and candyModel:FindFirstChild("Candy") then
+                HumanoidRootPart.CFrame = candyModel.Candy.CFrame
+                task.wait(0.18)
+                fireproximityprompt(candyModel.Candy.ProximityPrompt)
+                task.wait(0.38)
+            elseif not candyModel:FindFirstChild("Candy") then
+            end
+            if candyModel and candyModel:GetChildren() then
+                local candyChildren = candyModel:GetChildren()
+                for i, child in ipairs(candyChildren) do
+                    if child:IsA("MeshPart") then
+                        child.CanCollide = false
+                        interactWithItem(child, HumanoidRootPart)
+                    end
+                end
+            end
+            HumanoidRootPart.CFrame = CFrame.new(397.464417, 205.024261, -96.7273102, -0.0295444913, 1.17232098e-07, 0.999563456, -4.73236881e-08, 1, -1.1868206e-07, -0.999563456, -5.08094331e-08, -0.0295444913)
+        end)
+    end
+print("Hello World")
+end)
+
+local tab1 = window:CreateTab("Trials Part 3")
+
+tab1:CreateButton("Instant Potion", function()
+local function interactWithItem(part, prompt, HumanoidRootPart)
+            if part and prompt then
+                HumanoidRootPart.CFrame = part.CFrame
+                task.wait(0.18)
+                fireproximityprompt(prompt)
+                task.wait(0.38)
+            else
+                warn("BasePart or ProximityPrompt is missing!")
+            end
+        end
+        if Character and HumanoidRootPart then
+            if not isPlayerAlive() then
+                return
+            end
+            local ingredients = {
+                workspace.MainObjective.Ingredients.Bats,
+                workspace.MainObjective.Ingredients.Snakes,
+                workspace.MainObjective.Ingredients.Roses,
+                workspace.MainObjective.Ingredients.Eyes
+            }
+            local cauldron = workspace.MainObjective.Cauldron.Main
+            for _, ingredientModel in ipairs(ingredients) do
+                if ingredientModel then
+                    for _, child in ipairs(ingredientModel:GetChildren()) do
+                        if child:IsA("BasePart") then
+                            child.CanCollide = false
+                            local proximityPrompt = child:FindFirstChild("ProximityPrompt")
+                            interactWithItem(child, proximityPrompt, HumanoidRootPart)
+                        elseif child:IsA("Model") then
+                            local basePart, proximityPrompt = nil, nil
+                            for _, descendant in ipairs(child:GetDescendants()) do
+                                if descendant:IsA("BasePart") then
+                                    basePart = descendant
+                                elseif descendant:IsA("ProximityPrompt") then
+                                    proximityPrompt = descendant
+                                end
+                                if basePart and proximityPrompt then
+                                    break
+                                end
+                            end
+                            if basePart and proximityPrompt then
+                                basePart.CanCollide = false
+                                interactWithItem(basePart, proximityPrompt, HumanoidRootPart)
+                            end
+                        end
+                    end
+                else
+                    warn(ingredientModel.Name .. " is empty or does not exist!")
+                end
+            end
+            if cauldron and cauldron:FindFirstChild("ProximityPrompt") then
+                cauldron.CanCollide = false
+                HumanoidRootPart.CFrame = cauldron.CFrame
+                task.wait(0.18)
+                fireproximityprompt(cauldron.ProximityPrompt)
+                task.wait(0.38)
+            else
+                warn("Cauldron or its ProximityPrompt is missing!")
+            end
+        end
+    end
+print("Hello World")
+end)
+
+tab1:CreateButton("Collect All Candy", function()
+executeIfAlive(function()
+            local function interactWithItem(item, HumanoidRootPart)
+                if item:IsA("MeshPart") and item:FindFirstChild("ProximityPrompt") then
+                    HumanoidRootPart.CFrame = item.CFrame
+                    task.wait(0.18)
+                    fireproximityprompt(item.ProximityPrompt)
+                    task.wait(0.38)
+                end
+            end
+            local candyModel = workspace.Candy
+            if candyModel and candyModel:FindFirstChild("Candy") then
+                HumanoidRootPart.CFrame = candyModel.Candy.CFrame
+                task.wait(0.18)
+                fireproximityprompt(candyModel.Candy.ProximityPrompt)
+                task.wait(0.38)
+            elseif not candyModel:FindFirstChild("Candy") then
+            end
+            if candyModel and candyModel:GetChildren() then
+                local candyChildren = candyModel:GetChildren()
+                for i, child in ipairs(candyChildren) do
+                    if child:IsA("MeshPart") then
+                        child.CanCollide = false
+                        interactWithItem(child, HumanoidRootPart)
+                    end
+                end
+            end
+            HumanoidRootPart.CFrame = CFrame.new(107.056656, 37.057106, 246.335251, 0.903638005, 2.76608443e-08, 0.428297102, -2.91318275e-10, 1, -6.39686775e-08, -0.428297102, 5.76797525e-08, 0.903638005)
+        end)
+    end
+print("Hello World")
+end)
